@@ -1,5 +1,5 @@
-require("dotenv").config();
 const express = require("express");
+require("dotenv").config();
 const cors = require("cors");
 const conectarDB = require("./config/db");
 const servicioRoutes = require("./routes/servicios.routes");
@@ -11,6 +11,9 @@ conectarDB();
 // Middlewares
 app.use(cors());
 app.use(express.json());
+
+// Para cuando se trabaja con formularios
+app.use(express.urlencoded());
 
 // Rutas
 app.use("/api/v1/servicios", servicioRoutes);

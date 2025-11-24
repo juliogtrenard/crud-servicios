@@ -9,8 +9,10 @@ const Servicio = require("../models/servicio.model");
  * @returns {JSON} Respuesta con el servicio creado o un error
  */
 const crearServicio = async (req, res) => {
+    const { body } = req;
+
     try {
-        const servicio = new Servicio(req.body);
+        const servicio = new Servicio(body);
         await servicio.save();
 
         res.status(201).json({
@@ -73,8 +75,10 @@ const obtenerServicios = async (req, res) => {
  * @returns {JSON} Servicio encontrado o mensaje de error
  */
 const obtenerServicio = async (req, res) => {
+    const { id } = req.params;
+
     try {
-        const servicio = await Servicio.findById(req.params.id);
+        const servicio = await Servicio.findById(id);
 
         if (!servicio) {
             return res.status(404).json({
@@ -106,13 +110,14 @@ const obtenerServicio = async (req, res) => {
  * @returns {JSON} Servicio actualizado o mensaje de error
  */
 const actualizarServicio = async (req, res) => {
+    const { id } = req.params;
+    const { body } = req;
+    const options = {
+        new: true,
+    };
+
     try {
-        const servicio = await Servicio.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            //{ new: true }
-            { returnDocument: "after" }
-        );
+        const servicio = await Servicio.findByIdAndUpdate(id, body, options);
 
         if (!servicio) {
             return res.status(404).json({
@@ -143,8 +148,10 @@ const actualizarServicio = async (req, res) => {
  * @returns {JSON} Confirmación de eliminación o error
  */
 const eliminarServicio = async (req, res) => {
+    const { id } = req.params;
+
     try {
-        const servicio = await Servicio.findByIdAndDelete(req.params.id);
+        const servicio = await Servicio.findByIdAndDelete(id);
 
         if (!servicio) {
             return res.status(404).json({
