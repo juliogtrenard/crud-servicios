@@ -12,7 +12,36 @@ const {
     eliminarServicio,
 } = require("../controllers/servicios.controller");
 
-router.post("/", crearServicio);
+/**
+ * @description Funciones y constantes para validar
+ */
+const {
+    validarNombre,
+    validarDescripcion,
+    validarPrecio,
+    validarEmail,
+    validarDescuento,
+    validarEstadoServicio,
+} = require("../utils/validaciones");
+
+/**
+ * @description Middlewares de validación
+ */
+const { validarErrores } = require("../middlewares/servicios.middleware");
+
+router.post(
+    "/",
+    [
+        validarNombre,
+        validarDescripcion,
+        validarPrecio,
+        validarEmail,
+        validarDescuento,
+        validarEstadoServicio,
+        validarErrores,
+    ],
+    crearServicio
+);
 router.get("/", obtenerServicios);
 router.get("/:id", obtenerServicio);
 router.put("/:id", actualizarServicio);

@@ -21,20 +21,6 @@ const crearServicio = async (req, res) => {
             data: servicio,
         });
     } catch (error) {
-        if (error.code === 11000) {
-            return res.status(400).json({
-                ok: false,
-                message: "Ya existe un servicio con ese nombre",
-            });
-        }
-
-        if (error.name === "ValidationError") {
-            return res.status(400).json({
-                ok: false,
-                message: "Datos insuficientes",
-            });
-        }
-
         res.status(500).json({
             ok: false,
             message: "Error al crear el servicio",

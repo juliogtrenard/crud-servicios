@@ -7,6 +7,9 @@ const ServicioSchema = new mongoose.Schema({
     nombre: { type: String, unique: true, required: true },
     descripcion: { type: String, required: true },
     precio: { type: Number, required: true },
+    email: { type: String, required: true },
+    descuento: { type: Number },
+    estado: { type: String, required: true },
 });
 
 module.exports = mongoose.model("Servicio", ServicioSchema);
