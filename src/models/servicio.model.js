@@ -10,6 +10,7 @@ const ServicioSchema = new mongoose.Schema({
     email: { type: String, required: true },
     descuento: { type: Number },
     estado: { type: String, required: true },
+    fecha: { type: Date, required: true },
 });
 
 module.exports = mongoose.model("Servicio", ServicioSchema);

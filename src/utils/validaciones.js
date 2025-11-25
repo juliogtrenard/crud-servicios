@@ -77,6 +77,13 @@ const validarEstadoServicio = check("estado")
     .bail()
     .custom(validarEstado);
 
+const validarFecha = check("fecha")
+    .notEmpty()
+    .withMessage("El campo no puede estar vacío.")
+    .bail()
+    .isDate({ format: "YYYY-MM-DD", strictMode: true })
+    .withMessage("Formato de fecha inválido (YYYY-MM-DD)");
+
 module.exports = {
     validarNombre,
     validarDescripcion,
@@ -84,6 +91,7 @@ module.exports = {
     validarEmail,
     validarDescuento,
     validarEstadoServicio,
+    validarFecha,
     servicioExistente,
     validarEstado,
 };

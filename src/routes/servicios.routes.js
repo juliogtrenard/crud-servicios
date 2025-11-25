@@ -22,6 +22,7 @@ const {
     validarEmail,
     validarDescuento,
     validarEstadoServicio,
+    validarFecha,
 } = require("../utils/validaciones");
 
 /**
@@ -38,6 +39,7 @@ router.post(
         validarEmail,
         validarDescuento,
         validarEstadoServicio,
+        validarFecha,
         validarErrores,
     ],
     crearServicio
