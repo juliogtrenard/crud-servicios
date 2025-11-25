@@ -21,4 +21,21 @@ const validarErrores = (req, res, next) => {
     next();
 };
 
-module.exports = { validarErrores };
+/**
+ * @description Middleware para validar que el cuerpo de la solicitud no esté vacío
+ * @param {Object} req - objeto de solicitud
+ * @param {Object} res - objeto de respuesta
+ * @param {Function} next - función para pasar al siguiente middleware
+ * @returns {void}
+ */
+const validarBody = (req, res, next) => {
+    if (!req.body) {
+        return res.status(400).json({
+            ok: false,
+            mensaje: "Debe enviar al menos un campo para actualizar.",
+        });
+    }
+    next();
+};
+
+module.exports = { validarErrores, validarBody };

@@ -42,6 +42,16 @@ const validarNombre = check("nombre")
     .bail()
     .custom(servicioExistente);
 
+const validarNombreOpcional = check("nombre")
+    .optional()
+    .isString()
+    .withMessage("El campo tiene que ser una cadena de texto.")
+    .bail()
+    .isLength({ min: 2, max: 50 })
+    .withMessage("Longitud entre 2 y 50")
+    .bail()
+    .custom(servicioExistente);
+
 const validarDescripcion = check("descripcion")
     .notEmpty()
     .withMessage("El campo no puede estar vacío.")
@@ -89,6 +99,7 @@ const validarFecha = check("fecha")
 module.exports = {
     validarID,
     validarNombre,
+    validarNombreOpcional,
     validarDescripcion,
     validarPrecio,
     validarEmail,

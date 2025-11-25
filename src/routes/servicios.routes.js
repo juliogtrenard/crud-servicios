@@ -18,6 +18,7 @@ const {
 const {
     validarID,
     validarNombre,
+    validarNombreOpcional,
     validarDescripcion,
     validarPrecio,
     validarEmail,
@@ -29,7 +30,10 @@ const {
 /**
  * @description Middlewares de validación
  */
-const { validarErrores } = require("../middlewares/servicios.middleware");
+const {
+    validarErrores,
+    validarBody,
+} = require("../middlewares/servicios.middleware");
 
 router.post(
     "/",
@@ -50,7 +54,22 @@ router.get("/", obtenerServicios);
 
 router.get("/:id", [validarID, validarErrores], obtenerServicio);
 
-router.put("/:id", [validarID, validarErrores], actualizarServicio);
+router.put(
+    "/:id",
+    [
+        validarID,
+        validarBody,
+        validarNombreOpcional,
+        validarDescripcion.optional(),
+        validarPrecio.optional(),
+        validarEmail.optional(),
+        validarDescuento.optional(),
+        validarEstadoServicio.optional(),
+        validarFecha.optional(),
+        validarErrores,
+    ],
+    actualizarServicio
+);
 
 router.delete("/:id", [validarID, validarErrores], eliminarServicio);
 
