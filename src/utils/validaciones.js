@@ -28,6 +28,8 @@ const validarEstado = (value) => {
     return true;
 };
 
+const validarID = check("id").isMongoId().withMessage("ID inválido");
+
 const validarNombre = check("nombre")
     .notEmpty()
     .withMessage("El campo no puede estar vacío.")
@@ -85,6 +87,7 @@ const validarFecha = check("fecha")
     .withMessage("Formato de fecha inválido (YYYY-MM-DD)");
 
 module.exports = {
+    validarID,
     validarNombre,
     validarDescripcion,
     validarPrecio,

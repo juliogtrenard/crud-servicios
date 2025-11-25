@@ -16,6 +16,7 @@ const {
  * @description Funciones y constantes para validar
  */
 const {
+    validarID,
     validarNombre,
     validarDescripcion,
     validarPrecio,
@@ -44,9 +45,13 @@ router.post(
     ],
     crearServicio
 );
+
 router.get("/", obtenerServicios);
-router.get("/:id", obtenerServicio);
-router.put("/:id", actualizarServicio);
-router.delete("/:id", eliminarServicio);
+
+router.get("/:id", [validarID, validarErrores], obtenerServicio);
+
+router.put("/:id", [validarID, validarErrores], actualizarServicio);
+
+router.delete("/:id", [validarID, validarErrores], eliminarServicio);
 
 module.exports = router;
