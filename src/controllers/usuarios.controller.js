@@ -33,7 +33,7 @@ const allUsers = async (req, res) => {
  * @returns {JSON} Respuesta con el estado de la creación del usuario
  */
 const createUser = async (req, res) => {
-    const { nombre, email, password } = req.body;
+    const { nombre, email, role, password } = req.body;
 
     try {
         const existe = await Usuario.findOne({ email });
@@ -51,6 +51,7 @@ const createUser = async (req, res) => {
         const nuevoUsuario = {
             nombre,
             email,
+            role,
             password: hash,
         };
 
