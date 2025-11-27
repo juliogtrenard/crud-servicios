@@ -21,6 +21,8 @@ const crearServicio = async (req, res) => {
             data: servicio,
         });
     } catch (error) {
+        console.log(error);
+
         res.status(500).json({
             ok: false,
             message: "Error al crear el servicio",
@@ -45,6 +47,8 @@ const obtenerServicios = async (req, res) => {
             data: servicios,
         });
     } catch (error) {
+        console.log(error);
+
         res.status(500).json({
             ok: false,
             message: "Error al obtener los servicios",
@@ -79,6 +83,8 @@ const obtenerServicio = async (req, res) => {
             data: servicio,
         });
     } catch (error) {
+        console.log(error);
+
         res.status(500).json({
             ok: false,
             message: "Error al obtener el servicio",
@@ -118,6 +124,8 @@ const actualizarServicio = async (req, res) => {
             data: servicio,
         });
     } catch (error) {
+        console.log(error);
+
         res.status(500).json({
             ok: false,
             message: "Error al actualizar el servicio",
@@ -151,6 +159,8 @@ const eliminarServicio = async (req, res) => {
             message: "Servicio eliminado correctamente",
         });
     } catch (error) {
+        console.log(error);
+
         res.status(500).json({
             ok: false,
             message: "Error al eliminar el servicio",
