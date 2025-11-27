@@ -55,7 +55,11 @@ const createUser = async (req, res) => {
         const usuario = new Usuario(nuevoUsuario);
         await usuario.save();
 
-        const token = await obtenerJWT({ nombre, email });
+        const token = await obtenerJWT({
+            nombre,
+            role: usuario.role,
+            uid: usuario._id,
+        });
 
         res.status(201).json({
             ok: true,
@@ -85,7 +89,7 @@ const loginUser = async (req, res) => {
         const usuarioExistente = await Usuario.findOne({ email });
 
         if (!usuarioExistente) {
-            return res.status(400).json({
+            return res.status(401).json({
                 ok: false,
                 message: "No hay usuario con ese email",
             });
@@ -97,25 +101,29 @@ const loginUser = async (req, res) => {
         );
 
         if (!coinciden) {
-            return res.status(400).json({
+            return res.status(401).json({
                 ok: false,
                 msg: "La contraseña no es válida",
             });
         }
 
-        const token = await obtenerJWT({ email, password });
+        const token = await obtenerJWT({
+            nombre: usuarioExistente.nombre,
+            role: usuarioExistente.role,
+            uid: usuarioExistente._id,
+        });
 
         const user = {
             nombre: usuarioExistente.nombre,
-            email,
+            role: usuarioExistente.role,
             uid: usuarioExistente._id,
         };
 
         res.status(200).json({
             ok: true,
             message: "login de usuario",
-            user: user,
-            token: token,
+            user,
+            token,
         });
     } catch (error) {
         console.log(error);
@@ -127,9 +135,35 @@ const loginUser = async (req, res) => {
     }
 };
 
+/**
+ * @description Renueva el token de un usuario autenticado
+ * @param {Object} req - La petición
+ * @param {Object} res - La respuesta
+ */
 const renewToken = async (req, res) => {
     try {
-    } catch (error) {}
+        const { nombre, role, uid } = req.tokenData;
+
+        const token = await obtenerJWT({ nombre, role, uid });
+
+        const user = {
+            nombre,
+            role,
+            _id: uid,
+        };
+
+        res.status(200).json({
+            ok: true,
+            message: "Token renovado correctamente.",
+            user,
+            token,
+        });
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            message: "Error, algo salió mal en el servidor.",
+        });
+    }
 };
 
 module.exports = { allUsers, createUser, loginUser, renewToken };

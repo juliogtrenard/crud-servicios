@@ -18,7 +18,7 @@ app.use(express.urlencoded());
 
 // Rutas
 app.use("/api/v1/servicios", servicioRoutes);
-app.use("/api/v1/usuarios", usuarioRoutes);
+app.use("/api/v1/auth", usuarioRoutes);
 app.use((req, res) => {
     res.status(404).json({
         ok: false,
