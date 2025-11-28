@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: utils/validaciones.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: utils/validaciones.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const Servicio = require("../models/servicio.model");
+const { check } = require("express-validator");
+
+/**
+ * @description Valida si un servicio con el mismo nombre ya existe
+ * @param {string} nombre - El nombre del servicio a validar
+ * @returns {boolean} - True si no existe un servicio con ese nombre
+ * @throws {Error} - Si ya existe un servicio con ese nombre
+ */
+const servicioExistente = async (nombre) => {
+    const servicioExistente = await Servicio.findOne({ nombre });
+    if (servicioExistente) {
+        throw new Error("Ya existe un servicio con ese nombre");
+    }
+    return true;
+};
+
+/**
+ * @description Valida el estado del servicio
+ * @param {*} value - El valor del estado a validar
+ * @returns {boolean} - True si el estado es válido
+ * @throws {Error} - Si el estado no es válido
+ */
+const validarEstado = (value) => {
+    if (value !== "Disponible" &amp;&amp; value !== "No disponible") {
+        throw new Error("Campos válidos: 'Disponible' o 'No disponible'");
+    }
+    return true;
+};
+
+const validarID = check("id").isMongoId().withMessage("ID inválido");
+
+const validarNombre = check("nombre")
+    .notEmpty()
+    .withMessage("El campo no puede estar vacío.")
+    .bail()
+    .isString()
+    .withMessage("El campo tiene que ser una cadena de texto.")
+    .bail()
+    .isLength({ min: 2, max: 50 })
+    .withMessage("Longitud entre 2 y 50")
+    .bail()
+    .custom(servicioExistente);
+
+const validarNombreOpcional = check("nombre")
+    .optional()
+    .isString()
+    .withMessage("El campo tiene que ser una cadena de texto.")
+    .bail()
+    .isLength({ min: 2, max: 50 })
+    .withMessage("Longitud entre 2 y 50")
+    .bail()
+    .custom(servicioExistente);
+
+const validarDescripcion = check("descripcion")
+    .notEmpty()
+    .withMessage("El campo no puede estar vacío.")
+    .bail()
+    .isString()
+    .withMessage("El campo tiene que ser una cadena de texto.")
+    .bail()
+    .isLength({ min: 2, max: 100 })
+    .withMessage("Longitud entre 2 y 100");
+
+const validarPrecio = check("precio")
+    .notEmpty()
+    .withMessage("El campo no puede estar vacío.")
+    .bail()
+    .isFloat({ min: 0 })
+    .withMessage("El campo tiene que ser numérico.");
+
+const validarEmail = check("email")
+    .notEmpty()
+    .withMessage("El campo no puede estar vacío.")
+    .bail()
+    .isEmail()
+    .withMessage("Email incorrecto.");
+
+const validarDescuento = check("descuento")
+    .isFloat({ min: 0, max: 100 })
+    .withMessage("Valor entre 0 y 100");
+
+const validarEstadoServicio = check("estado")
+    .notEmpty()
+    .withMessage("El campo no puede estar vacío.")
+    .bail()
+    .isString()
+    .withMessage("El campo debe ser una cadena de texto.")
+    .bail()
+    .custom(validarEstado);
+
+const validarFecha = check("fecha")
+    .notEmpty()
+    .withMessage("El campo no puede estar vacío.")
+    .bail()
+    .isDate({ format: "YYYY-MM-DD", strictMode: true })
+    .withMessage("Formato de fecha inválido (YYYY-MM-DD)");
+
+module.exports = {
+    validarID,
+    validarNombre,
+    validarNombreOpcional,
+    validarDescripcion,
+    validarPrecio,
+    validarEmail,
+    validarDescuento,
+    validarEstadoServicio,
+    validarFecha,
+    servicioExistente,
+    validarEstado,
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#ServicioSchema">ServicioSchema</a></li><li><a href="global.html#UsuarioSchema">UsuarioSchema</a></li><li><a href="global.html#actualizarServicio">actualizarServicio</a></li><li><a href="global.html#allUsers">allUsers</a></li><li><a href="global.html#conectarDB">conectarDB</a></li><li><a href="global.html#crearServicio">crearServicio</a></li><li><a href="global.html#createUser">createUser</a></li><li><a href="global.html#eliminarServicio">eliminarServicio</a></li><li><a href="global.html#loginUser">loginUser</a></li><li><a href="global.html#obtenerJWT">obtenerJWT</a></li><li><a href="global.html#obtenerServicio">obtenerServicio</a></li><li><a href="global.html#obtenerServicios">obtenerServicios</a></li><li><a href="global.html#renewToken">renewToken</a></li><li><a href="global.html#servicioExistente">servicioExistente</a></li><li><a href="global.html#validarBody">validarBody</a></li><li><a href="global.html#validarErrores">validarErrores</a></li><li><a href="global.html#validarEstado">validarEstado</a></li><li><a href="global.html#validarJWT">validarJWT</a></li><li><a href="global.html#verificarRol">verificarRol</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Fri Nov 28 2025 09:47:37 GMT+0100 (hora estándar de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
